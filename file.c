@@ -106,6 +106,7 @@ void main(){
   //}
 
   int score[condSize][2];
+  float pourc[condSize];
   for(int i = 0; i < condSize; i++){
     score[i][0] = i;
     score[i][1] = 0;
@@ -118,6 +119,9 @@ void main(){
   }
   for(int i = 0; i < elecSize; i++) printf("%d ", tour1[i]);
   printf("\n");
-  for(int i = 0; i < condSize; i++) printf("%d has %d votes (%.3f%%)\n", score[i][0], score[i][1], (float)score[i][1]*100/elecSize);
+  for(int i = 0; i < condSize; i++){
+    pourc[i] = (float)score[i][1]*100/elecSize;
+    printf("%d has %d votes (%.3f%%)\n", score[i][0], score[i][1], pourc[i]);
+  }
 
 }
