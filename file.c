@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#define elecMin 10
-#define condMin 5
+#define elecMin 2
+#define condMin 2
 
 // typedef struct condidat
 // {
@@ -27,16 +27,16 @@ struct electeur
 	char cin[8];
 };
 
-// int checkElec(Elect* arr, int size, char* cin){
-// 	for(int i = 0; i < size; i++){
-// 		if(strcmp(arr[i].cin, cin) == 0) return 1;
-// 	}
-// 	return 0;
-// }
+//int checkElec(Elect* arr, int size, char* cin){
+	//for(int i = 0; i < size; i++){
+		//if(strcmp(arr[i].cin, cin) == 0) return 1;
+	//}
+	//return 0;
+//}
 
 void printConds(struct condidat* arr, int size){
 	for(int i = 0; i < size; i++){
-		printf("%d -> %s %s %s\n", i+1,arr[i].fname, arr[i].lname, arr[i].cin);
+		printf("%d -> %s %s %s\n", i, arr[i].fname, arr[i].lname, arr[i].cin);
 	}
 }
 
@@ -50,6 +50,7 @@ void main(){
 	int elecSize=0, condSize=0;
 	struct electeur* electeurs;
 	struct condidat* condidats;
+  //system("clear");
 	while(elecSize < elecMin){
 		printf("entrer le nombre des electeurs : ");
 		scanf("%d", &elecSize);
@@ -62,7 +63,6 @@ void main(){
 			}
 		}
 	}
-	printElects(electeurs, elecSize);
 	while(condSize < condMin){
 		printf("entrer le nombre des cindidats : ");
 		scanf("%d", &condSize);
@@ -79,10 +79,44 @@ void main(){
 			}
 		}
 	}
+  //system("clear");
+  printf("liste des electeurs:\n");
+	printElects(electeurs, elecSize);
+  printf("liste des condidats:\n");
 	printConds(condidats, condSize);
 	// tour 1
+  int tour1[elecSize], in=0, idx=-1;
+  while(in < elecSize){
+    printf("%s vote pour : ", electeurs[in].cin);
+    scanf("%d", &idx); 
+    if(idx < 0 || idx >= condSize) printf("veuillez choisir un numero parmi ceux affiches a l'ecran\n");
+    else {tour1[in] = idx; in++;}
+  }
+  
+  for(int i = 0; i < elecSize; i++) printf("%d ", tour1[i]);
+  printf("\n");
 
-	// for(int i = 0; i < elecSize; i++){
-	// 	printf("%s vote pour : ", electeurs[i].cin);
-	// }
+  //int score[condSize][2];
+  //for(int i = 0; i < condSize; i++){
+    //score[i][0] = i;
+    //score[i][1] = 0;
+    //for(int j = 0; j < elecSize; j++){
+      //if(tour1[j] == i) score[i][1]++;
+    //}
+  //}
+
+  int score[condSize][2];
+  for(int i = 0; i < condSize; i++){
+    score[i][0] = i;
+    score[i][1] = 0;
+    for(int j = 0; j < elecSize; j++){
+      printf("tour1[%d] = %d || i = %d\n", j, tour1[j], i);
+      if(i == tour1[j]) score[i][1]++;
+      printf("%d -> %d\n", score[i][0], score[i][1]);
+    }
+    printf("\n");
+  }
+  for(int i = 0; i < elecSize; i++) printf("%d ", tour1[i]);
+  printf("\n");
+  for(int i = 0; i < condSize; i++) printf("%d has %d votes\n", score[i][0], score[i][1]);
 }
