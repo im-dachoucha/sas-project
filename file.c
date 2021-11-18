@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#define elecMin 2
-#define condMin 2
+#define elecMin 10
+#define condMin 5
 
 // typedef struct condidat
 // {
