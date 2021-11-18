@@ -67,7 +67,7 @@ void main()
 			electeurs = (struct electeur *)malloc(elecSize * sizeof(struct electeur));
 			for (int i = 0; i < elecSize; i++)
 			{
-				printf("entrer cin %d : ", i + 1);
+				printf("entrer cin %d : ", i);
 				scanf("%s", &electeurs[i].cin);
 			}
 		}
@@ -83,11 +83,11 @@ void main()
 			condidats = (struct condidat *)malloc(condSize * sizeof(struct condidat));
 			for (int i = 0; i < condSize; i++)
 			{
-				printf("entrer prenom %d : ", i + 1);
+				printf("entrer prenom %d : ", i);
 				scanf("%s", &condidats[i].fname);
-				printf("entrer nom %d : ", i + 1);
+				printf("entrer nom %d : ", i);
 				scanf("%s", &condidats[i].lname);
-				printf("entrer cin %d : ", i + 1);
+				printf("entrer cin %d : ", i);
 				scanf("%s", &condidats[i].cin);
 			}
 		}
@@ -254,6 +254,84 @@ void main()
 		else
 			printf("**le deuxieme tour sera refait (le condidats ont le meme nombre de votes**\n");
 	}
-	printf("list des condidats nomines pour le troisieme tour\n");
-	printConds(nommT2, pass);
+	if (pass != 1)
+	{
+		//tour3
+		printf("list des condidats nomines pour le troisieme tour\n");
+		printConds(nommT2, pass);
+		int condT3 = pass;
+		t = pass = 0;
+		while (!t)
+		{
+			int tour3[elecSize], idx, in = 0;
+			while (in < elecSize)
+			{
+				printf("%s vote pour : ", electeurs[in].cin);
+				scanf("%d", &idx);
+				if (idx < 0 || idx >= condT3)
+					printf("veuillez choisir un numero parmi ceux affiches a l'ecran\n");
+				else
+				{
+					tour3[in] = idx;
+					in++;
+				}
+			}
+			int score[condT3][2];
+			float pourc3[condT3];
+			for (int i = 0; i < condT3; i++)
+			{
+				score[i][0] = i;
+				score[i][1] = 0;
+				for (int j = 0; j < elecSize; j++)
+				{
+					if (i == tour3[j])
+						score[i][1]++;
+				}
+			}
+			pass = 0;
+			for (int i = 0; i < condT3; i++)
+			{
+				pourc3[i] = (float)score[i][1] * 100 / elecSize;
+				if (pourc3[i] > (float)15.0)
+					pass++;
+				printf("%d has %d votes (%.3f%%)\n", score[i][0], score[i][1], pourc3[i]);
+			}
+			printf("\npourc\n");
+			for (int i = 0; i < condT3; i++)
+			{
+				printf("i = %d | pourc i = %.3f\n", i, pourc3[i]);
+			}
+			int maxIdx = 0;
+			for (int i = 1; i < condT3; i++)
+			{
+				if (pourc3[i] > pourc3[maxIdx])
+					maxIdx = i;
+			}
+			printf("\nmaxid = %d\n", maxIdx);
+			int found = 0, i = 0;
+			while (!found && i < condT3)
+			{
+				printf("pourc[%d] %.3f | maxid %d | pourc[maxid] %.3f\n", i, pourc3[i], maxIdx, pourc3[maxIdx]);
+				if (i != maxIdx && pourc3[i] == pourc3[maxIdx])
+					found++;
+				i++;
+			}
+
+			if (found)
+			{
+				printf("**le troisieme tour sera refait (au moins deux conidat ont le meme nombre de votes**\n");
+			}
+			else
+			{
+				printf("**le condidat elu a la presidence depuis le troisieme tour : \n");
+				printf("%s\t%s\t%s", nommT2[maxIdx].fname, nommT2[maxIdx].lname, nommT2[maxIdx].cin);
+				t = 1;
+			}
+		}
+	}
+	else
+	{
+		printf("**le condidat elu a la presidence depuis le deuxieme tour : \n");
+		printf("%s\t%s\t%s", nommT2[0].fname, nommT2[0].lname, nommT2[0].cin);
+	}
 }
