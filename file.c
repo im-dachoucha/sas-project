@@ -99,9 +99,9 @@ void main()
 	printConds(condidats, condSize);
 
 	// tour 1
-	int pass = 0, t1 = 0;
+	int pass = 0, t = 0;
 	struct condidat *nommT1;
-	while (!t1)
+	while (!t)
 	{
 		int tour1[elecSize], in = 0, idx = -1;
 		while (in < elecSize)
@@ -143,7 +143,7 @@ void main()
 		for (int i = 0; i < condSize; i++)
 		{
 			pourc[i] = (float)score[i][1] * 100 / elecSize;
-			if (pourc[i] > 15.0)
+			if (pourc[i] > (float)15.0)
 				pass++;
 			printf("%d has %d votes (%.3f%%)\n", score[i][0], score[i][1], pourc[i]);
 		}
@@ -175,11 +175,85 @@ void main()
 					j++;
 				}
 			}
-			t1 = 1;
+			t = 1;
 		}
 		else
 			printf("**le premier tour sera refait (les condidats ont le meme nombre de votes**\n");
 	}
-	printf("liste des condidats nommines pour le deuxieme tour\n");
+	printf("liste des condidats nomines pour le deuxieme tour\n");
 	printConds(nommT1, pass);
+	//tour2
+	struct condidat *nommT2;
+	int condT2 = pass;
+	t = pass = 0;
+	while (!t)
+	{
+		int tour2[elecSize], idx, in = 0;
+		while (in < elecSize)
+		{
+			printf("%s vote pour : ", electeurs[in].cin);
+			scanf("%d", &idx);
+			if (idx < 0 || idx >= condT2)
+				printf("veuillez choisir un numero parmi ceux affiches a l'ecran\n");
+			else
+			{
+				tour2[in] = idx;
+				in++;
+			}
+		}
+		for (int i = 0; i < elecSize; i++)
+			printf("%d ", tour2[i]);
+		printf("\n");
+		int score[condT2][2];
+		float pourc2[condT2];
+		for (int i = 0; i < condT2; i++)
+		{
+			score[i][0] = i;
+			score[i][1] = 0;
+			for (int j = 0; j < elecSize; j++)
+			{
+				if (i == tour2[j])
+					score[i][1]++;
+			}
+		}
+
+		pass = 0;
+		for (int i = 0; i < condT2; i++)
+		{
+			pourc2[i] = (float)score[i][1] * 100 / elecSize;
+			if (pourc2[i] > (float)15.0)
+				pass++;
+			printf("%d has %d votes (%.3f%%)\n", score[i][0], score[i][1], pourc2[i]);
+		}
+		int diff = in = 0;
+		while (diff == 0 && in < condT2 - 1)
+		{
+			if (pourc2[in] != pourc2[in + 1])
+			{
+				diff = 1;
+				break;
+			}
+			in++;
+		}
+		if (diff != 0)
+		{
+			nommT2 = (struct condidat *)malloc(condT2 * sizeof(struct condidat));
+			int j = 0;
+			for (int i = 0; i < condT2; i++)
+			{
+				if (pourc2[i] > (float)15.0)
+				{
+					strcpy(nommT2[j].fname, nommT1[i].fname);
+					strcpy(nommT2[j].lname, nommT1[i].lname);
+					strcpy(nommT2[j].cin, nommT1[i].cin);
+					j++;
+				}
+			}
+			t = 1;
+		}
+		else
+			printf("**le deuxieme tour sera refait (le condidats ont le meme nombre de votes**\n");
+	}
+	printf("list des condidats nomines pour le troisieme tour\n");
+	printConds(nommT2, pass);
 }
