@@ -57,7 +57,6 @@ void main()
 	int elecSize = 0, condSize = 0;
 	struct electeur *electeurs;
 	struct condidat *condidats;
-	//system("clear");
 	while (elecSize < elecMin)
 	{
 		printf("entrer le nombre des electeurs : ");
@@ -94,8 +93,8 @@ void main()
 			}
 		}
 	}
-	system("clear");
-	//system("cls");
+	//system("clear");
+	system("cls");
 	printf("liste des electeurs:\n\n");
 	printElects(electeurs, elecSize);
 	printf("liste des condidats:\n\n");
@@ -162,8 +161,8 @@ void main()
 			in++;
 		}
 		// printf("\ndiff = %d | in = %d | pass = %d\n", diff, in, pass);
-		system("clear");
-		//system("cls");
+		//system("clear");
+		system("cls");
 		if (diff != 0)
 		{
 			nommT1 = (struct condidat *)malloc(pass * sizeof(struct condidat));
@@ -182,8 +181,6 @@ void main()
 		}
 		else
 		{
-			//system("clear");
-			//system("cls");
 			printf("**le premier tour sera refait (les condidats ont le meme nombre de votes**\n\n");
 			printConds(condidats, condSize);
 			printf("\n");
@@ -249,8 +246,8 @@ void main()
 			}
 			in++;
 		}
-		system("clear");
-		//system("cls");
+		//system("clear");
+		system("cls");
 		if (diff != 0)
 		{
 			nommT2 = (struct condidat *)malloc(condT2 * sizeof(struct condidat));
@@ -341,8 +338,8 @@ void main()
 					found++;
 				i++;
 			}
-			system("clear");
-			//system("cls");
+			//system("clear");
+			system("cls");
 			for (int i = 0; i < condT3; i++)
 			{
 				printf("%s a %d votes (%.3f%%)\n", nommT2[i].cin, score[i][1], pourc3[i]);
